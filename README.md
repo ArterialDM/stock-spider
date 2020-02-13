@@ -15,10 +15,8 @@
     * [已经实现功能](#已经实现功能)
     * [未实现功能](#未实现功能)
 * [程序详细设计](#程序详细设计)
-    * [User类](#User类)
-    * [UserManager类](#UserManager类)
-    * [Magazine类](#Magazine类)
-    * [MagazineManager类](#MagazineManager类)
+    * [Stock类](#Stock类)
+    * [数据库结构](#数据库结构)
 * [总结](#总结)
 * [参考文献](#参考文献)
 * [使用截图](#参考文献)
@@ -34,96 +32,79 @@
 
 ### 基本原理或技术
 
-* 通过新浪股票API
+* 通过新浪股票API获取股票实时信息
+- 面向对象设计思想每爬回来一条信息实例化一个Stock类
+* 通过Sql查询语言存储爬回来的信息
 
 ### 系统需求
 
-* 把
+* 把所需信息从互联网上爬回来
+- 如果必要就需要加入一定的反爬技术
+* 用正则表达式处理爬回来的信息
+- 爬回来的信息进行数据统计科学计算
+* 用多种格式存储爬回来的信息如记事本、Csv、json、xml、 excel
 
 ## 程序概要设计
 
 ### 已经实现功能
 
-* 订户信息的注册
-- 订阅模块
-* 管理员可以增加书
-- 管理员可以删除库存为0的书
-* 杂志信息设定杂志编号、名称、数量、价格这4个变量
+* 通过爬新浪股票API成功获得股票实时信息
+- 爬回来的信息用Python字符串处理函数进行信息提取
+* 把存储在内存中的信息通过Sql语言写进数据库MySql8.0
+- 通过数据库软件MySql进行持久化操作
 
 ### 未实现功能
 
-* 查询功能
-- 管理员不能查询库存为0的杂志
-* 管理员不能修改杂志数量
+* 没有加入反爬技术
+- 没有使用到正则表达式技术
+* 没有把股票信息进行数学统计和科学计算
+- 没有把信息存储进如记事本、Csv、json、xml、 excel等多种载体
 
 ## 程序详细设计
 
-### User类
+### Stock类
 
-    class User {
-      public:
-	      int number;
-	      char *username;
-	      char *password;
-	      int money;
-	      int magazineList[100];
+    class Stock:
+      def __init__(self, ID, today_open_price,yesterday_close_price,now_price,today_top_price,yesterday_low_price):
+        self.ID=ID.split('_')[2]
+        self.today_open_price=today_open_price
+        self.yesterday_close_price=yesterday_close_price
+        self.now_price=now_price
+        self.today_top_price=today_top_price
+        self.yesterday_low_price=yesterday_low_price
+
+      def toString(self):
+        print("股票代码:",self.ID)
+        print("今日开盘价:", self.today_open_price)
+        print("昨日收盘价:", self.yesterday_close_price)
+        print("当前价格:", self.now_price)
+        print("今日最高价:", self.today_top_price)
+        print("今日最低价:", self.yesterday_low_price)
+
+      def store(self):
+        sql = "INSERT INTO stock(ID,today_open_price,yesterday_close_price,now_price,today_top_price,yesterday_low_price) VALUES ('"   +                self.ID  + "'" +      ","+self.today_open_price+","+self.yesterday_close_price+","
+	       +self.now_price+","+self.today_top_price+","+self.yesterday_low_price+")"
+        try:
+            cursor.execute(sql)
+            con.commit()
+            return True
+        except Exception as e:
+            print(e)
+            con.rollback()
+            return False
+
     …
-这是记录每个订阅人的类，每创建一个新订阅人账户，就在堆上new一个User。  
-User类的成员变量分别为编号，用户名，密码，钱包余额，已购买的书单。
+这是一个专门用来记录每条爬回来的股票信息的类。
 
-### UserManager类
+### 数据库结构
 
-    class UserManager {
-      public:
-	      int userNumber;
-	      User * userList[100];
-        UserManager()
-        bool addUser()
-        int isHaveSame(char *newUsername)
-        int isHaveAccount(char *thisUsername, char *thisPassword) 
-        Bool userAddMagazine(int userNumber,int magazineNumber,MagazineManager *thisMagazineManager) 
-        void readMagazine(int userNumber,int magazineNumber) 
-        bool addMoney(int userNumber)
-        void showUserBuy(int userNumber,MagazineManager thisMagazineManager)
-    …
-这是一个用来管理订户的类，用来保存订户信息和管理订户的方法。
-
-### Magazine类
-
-    class Magazine {
-      public:
-        char *title;
-	      int number;
-	      int price;
-	      int quantity;
-	      bool flag;
-    …
-    
-这是记录每个订阅人的类，每创建一个新订阅人账户，就在堆上new一个Magazine。  
-Magazine类的成员变量分别为书名，书的编号，价格，库存，是否生效。
-
-### MagazineManager类
-
-    class MagazineManager {
-      public:
-	      Magazine *magazineList[100];
-	      int number;
-	      MagazineManager() 
-	      bool addMagazine() 
-	      bool getMagazine(int thisNumber)
-	      void showAllMagazine() 
-	      void cleanZero() 
-	      void search(char key)
-    …
-    
-这是一个用来管理杂志的类，用来储存杂志存放的地址和进行对杂志的各种操作。
 
 ## 总结
 
-450多行代码，没什么意义的作业，排版真辛苦，浪费我时间。
+Python作为一门脚本语言与其他严格的面向对象设计编译型语言相比，编写起来简洁轻松得多。
 
 ## 参考文献
 
-《C++ primer plus》
+《python高级编程》
 
 ## 使用截图
