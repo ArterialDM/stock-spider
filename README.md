@@ -18,7 +18,7 @@
     * [引入库](#引入库)
     * [爬的对象](#爬的对象)
     * [Stock类](#Stock类)
-    * [数据库结构](#数据库结构)
+    * [数据库表结构](#数据库表结构)
 * [总结](#总结)
 * [参考文献](#参考文献)
 * [使用截图](#参考文献)
@@ -114,7 +114,20 @@
     …
 这是一个专门用来记录每条爬回来的股票信息的类。
 
-### 数据库结构
+### 数据库表结构
+    create table stock
+      (
+	     count int auto_increment,
+	     ID varchar(20) null,
+	     today_open_price float null,
+	     yesterday_close_price float null,
+	     today_top_price float null,
+	     yesterday_low_price float null,
+	     now_price float null,
+	     time timestamp default now() not null,
+	     constraint stock_pk
+		  primary key (count)
+      );
 
 
 ## 总结
