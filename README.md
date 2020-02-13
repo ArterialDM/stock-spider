@@ -27,7 +27,7 @@
 
 ### 开发环境
 
-* Windows10
+* Windows 10
 - Python3
 * Pycharm
 - MySql8.0
