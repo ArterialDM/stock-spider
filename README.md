@@ -54,6 +54,7 @@
 - 爬回来的信息用Python字符串处理函数进行信息提取
 * 把存储在内存中的信息通过Sql语言写进数据库MySql8.0
 - 通过数据库软件MySql进行持久化操作
+* 单线程爬股票
 
 ### 未实现功能
 
@@ -61,6 +62,7 @@
 - 没有使用到正则表达式技术
 * 没有把股票信息进行数学统计和科学计算
 - 没有把信息存储进如记事本、Csv、json、xml、 excel等多种载体
+* 多线程爬股票
 
 ## 程序详细设计
 
@@ -114,21 +116,40 @@
     …
 这是一个专门用来记录每条爬回来的股票信息的类。
 
+### spider()
+
+    def spider():
+    for stockID in stockIDs:
+        url = 'http://hq.sinajs.cn/list=' + stockID
+        response = requests.get(url)
+        msg = response.text
+        msg_unit = msg.split(',')
+        stock = Stock(msg_unit[0], msg_unit[1], msg_unit[2], msg_unit[3], msg_unit[4], msg_unit[5])
+        stock.toString()
+        if(stock.store()):
+            print("成功写入数据库")
+        else:
+            print("写入数据库失败")
+
+每次到点爬虫该出发了就执行此函数
+
 ### 数据库表结构
+
     create table stock
       (
-	     count int auto_increment,
-	     ID varchar(20) null,
-	     today_open_price float null,
-	     yesterday_close_price float null,
-	     today_top_price float null,
-	     yesterday_low_price float null,
-	     now_price float null,
-	     time timestamp default now() not null,
-	     constraint stock_pk
-		  primary key (count)
+        count int auto_increment,
+	ID varchar(20) null,
+	today_open_price float null,
+        yesterday_close_price float null,
+	today_top_price float null,
+	yesterday_low_price float null,
+	now_price float null,
+	time timestamp default now() not null,
+	constraint stock_pk
+          primary key (count)
       );
 
+每个时间点每支股票爬回来的每条信息对应产生表的一条记录。
 
 ## 总结
 
