@@ -94,8 +94,7 @@
         print("今日最低价:", self.yesterday_low_price)
 
       def store(self):
-        sql = "INSERT INTO stock(ID,today_open_price,yesterday_close_price,now_price,today_top_price,yesterday_low_price) VALUES ('"   +                self.ID  + "'" +      ","+self.today_open_price+","+self.yesterday_close_price+","
-	       +self.now_price+","+self.today_top_price+","+self.yesterday_low_price+")"
+        sql = "INSERT INTO stock(ID,today_open_price,yesterday_close_price,now_price,today_top_price,yesterday_low_price) VALUES ('"+ self.ID+"'"+","+self.today_open_price+","+self.yesterday_close_price+","+self.now_price+","+self.today_top_price+","+self.yesterday_low_price+")"
         try:
             cursor.execute(sql)
             con.commit()
