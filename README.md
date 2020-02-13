@@ -137,16 +137,16 @@
 
     create table stock
       (
-        count int auto_increment,
-	ID varchar(20) null,
-	today_open_price float null,
-        yesterday_close_price float null,
-	today_top_price float null,
-	yesterday_low_price float null,
-	now_price float null,
-	time timestamp default now() not null,
-	constraint stock_pk
-          primary key (count)
+        count int auto_increment,  
+	    ID varchar(20) null,  
+	    today_open_price float null,  
+        yesterday_close_price float null,  
+	    today_top_price float null,
+	    yesterday_low_price float null,
+	    now_price float null,
+	    time timestamp default now() not null,
+	    constraint stock_pk
+            primary key (count)
       );
 
 每个时间点每支股票爬回来的每条信息对应产生表的一条记录。
