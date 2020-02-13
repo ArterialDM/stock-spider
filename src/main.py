@@ -30,7 +30,7 @@ class Stock:
             con.rollback()
             return False
 
-stockIDs =["sh601008","sh600004","sh601398"]
+stockIDs =("sh601008","sh600004","sh601398")
 
 def spider():
     for stockID in stockIDs:
