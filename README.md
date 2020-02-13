@@ -62,10 +62,22 @@
 
 ## 程序详细设计
 
+### 引入库
+
+    import requests
+通过http协议从互联网获取信息
+
+    import pymysql
+用pymysql模块连接数据库软件
+
+    import time
+用time模块设置定时，适当的让爬虫睡睡觉不要拼命地爬
+
 ### Stock类
 
     class Stock:
       def __init__(self, ID, today_open_price,yesterday_close_price,now_price,today_top_price,yesterday_low_price):
+      
         self.ID=ID.split('_')[2]
         self.today_open_price=today_open_price
         self.yesterday_close_price=yesterday_close_price
